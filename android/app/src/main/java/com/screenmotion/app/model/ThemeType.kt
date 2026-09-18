@@ -5,7 +5,8 @@ enum class ThemeType(
     val assetPath: String?,
     val emoji: String
 ) {
-    SPACE("Uzay", "wallpapers/space.jpg", "🚀"),
+    SPACESHIP("Uzay Aracı", "wallpapers/space.jpg", "🚀"),
+    SPACE("Uzay", "wallpapers/space.jpg", "🌌"),
     AQUARIUM("Akvaryum", "wallpapers/aquarium.jpg", "🐠"),
     CAR("Araba", "wallpapers/car_night.jpg", "🏎️"),
     TRUCK("Kamyon", "wallpapers/car_night.jpg", "🚛"),
