@@ -25,6 +25,7 @@ class InteractiveWallpaperService : WallpaperService() {
         private var height = 0
         private var lastFrameNanos = 0L
         private var frameDelayMs = 33L
+        private var gyroEnabled = true
 
         override fun onCreate(surfaceHolder: SurfaceHolder) {
             super.onCreate(surfaceHolder)
@@ -37,14 +38,16 @@ class InteractiveWallpaperService : WallpaperService() {
             renderer?.release()
 
             val config = repository.load()
+            gyroEnabled = config.gyroEnabled
             frameDelayMs = if (config.fps >= 60) 16L else 33L
+
             renderer = RendererFactory.create(applicationContext, config).also {
                 if (width > 0 && height > 0) it.onSizeChanged(width, height)
             }
+
             motionController = MotionController(applicationContext) { roll, pitch ->
                 renderer?.onMotion(roll, pitch)
             }
-            if (visible && config.gyroEnabled) motionController?.start()
         }
 
         override fun onSurfaceChanged(
@@ -61,9 +64,10 @@ class InteractiveWallpaperService : WallpaperService() {
 
         override fun onVisibilityChanged(visible: Boolean) {
             this.visible = visible
+
             if (visible) {
                 rebuildScene()
-                motionController?.start()
+                if (gyroEnabled) motionController?.start()
                 startRenderLoop()
             } else {
                 motionController?.stop()
@@ -82,6 +86,7 @@ class InteractiveWallpaperService : WallpaperService() {
         }
 
         override fun onSurfaceDestroyed(holder: SurfaceHolder) {
+            motionController?.stop()
             stopRenderLoop()
             super.onSurfaceDestroyed(holder)
         }
@@ -96,10 +101,12 @@ class InteractiveWallpaperService : WallpaperService() {
 
         private fun startRenderLoop() {
             if (renderThread != null) return
+
             renderThread = HandlerThread(
                 "ScreenMotionWallpaper",
                 Process.THREAD_PRIORITY_DISPLAY
             ).also { it.start() }
+
             renderHandler = Handler(renderThread!!.looper)
             lastFrameNanos = System.nanoTime()
             renderHandler?.post(frameRunnable)
@@ -115,11 +122,14 @@ class InteractiveWallpaperService : WallpaperService() {
         private val frameRunnable = object : Runnable {
             override fun run() {
                 if (!visible) return
+
                 val now = System.nanoTime()
                 val dt = ((now - lastFrameNanos) / 1_000_000_000f).coerceIn(0f, .05f)
                 lastFrameNanos = now
+
                 renderer?.update(dt)
                 drawFrame()
+
                 renderHandler?.postDelayed(this, frameDelayMs)
             }
         }
@@ -127,6 +137,7 @@ class InteractiveWallpaperService : WallpaperService() {
         private fun drawFrame() {
             val holder = surfaceHolder
             if (!holder.surface.isValid) return
+
             var canvas: android.graphics.Canvas? = null
             try {
                 canvas = holder.lockCanvas()

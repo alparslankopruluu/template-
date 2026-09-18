@@ -171,8 +171,7 @@ private fun MotionDemo(type: ThemeType, modifier: Modifier = Modifier) {
                 detectDragGestures(
                     onDragEnd = { dragX = 0f; dragY = 0f },
                     onDragCancel = { dragX = 0f; dragY = 0f }
-                ) { change, delta ->
-                    change.consume()
+                ) { _, delta ->
                     dragX += delta.x
                     dragY += delta.y
                 }
