@@ -1,0 +1,18 @@
+# Android
+.gradle/
+**/build/
+local.properties
+.idea/
+*.iml
+
+# iOS
+DerivedData/
+*.xcuserstate
+xcuserdata/
+.swiftpm/
+
+# macOS
+.DS_Store
+
+# Generated
+artifacts/
