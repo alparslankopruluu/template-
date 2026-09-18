@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 540">
+<defs>
+  <radialGradient id="space" cx=".55" cy=".38">
+    <stop stop-color="#512a8e"/><stop offset=".42" stop-color="#151238"/><stop offset="1" stop-color="#02030a"/>
+  </radialGradient>
+  <radialGradient id="planet" cx=".35" cy=".30">
+    <stop stop-color="#42d8ff"/><stop offset=".45" stop-color="#293fa4"/><stop offset="1" stop-color="#080b22"/>
+  </radialGradient>
+</defs>
+<rect width="360" height="540" fill="url(#space)"/>
+<g fill="#fff" opacity=".78">
+  <circle cx="33" cy="58" r="1"/><circle cx="90" cy="123" r="2"/><circle cx="160" cy="47" r="1.5"/>
+  <circle cx="252" cy="77" r="1"/><circle cx="319" cy="151" r="2"/><circle cx="225" cy="249" r="1.5"/>
+  <circle cx="48" cy="310" r="2"/><circle cx="128" cy="360" r="1"/><circle cx="302" cy="390" r="1.5"/>
+  <circle cx="205" cy="465" r="2"/><circle cx="60" cy="472" r="1.2"/>
+</g>
+<circle cx="268" cy="178" r="91" fill="url(#planet)"/>
+<g transform="translate(170 372)">
+  <path d="M0-58L36 20L12 10L0 48L-12 10L-36 20Z" fill="#dce8ef"/>
+  <circle cx="-11" cy="20" r="7" fill="#39ccff"/><circle cx="11" cy="20" r="7" fill="#39ccff"/>
+</g>
+</svg>
