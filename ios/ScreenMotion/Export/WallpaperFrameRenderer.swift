@@ -10,11 +10,52 @@ enum WallpaperFrameRenderer {
 
         let image = renderer.image { context in
             let rect = CGRect(origin: .zero, size: size)
-            UIColor.black.setFill()
-            context.fill(rect)
+            let cg = context.cgContext
 
-            if let background = UIImage(named: config.type.assetName) {
-                drawAspectFill(background, in: rect)
+            let colors: [CGColor]
+            switch config.type {
+            case .aquarium:
+                colors = [
+                    UIColor(red: 0.03, green: 0.48, blue: 0.80, alpha: 1).cgColor,
+                    UIColor(red: 0.00, green: 0.06, blue: 0.16, alpha: 1).cgColor
+                ]
+            case .space, .spaceship, .airplane, .helicopter:
+                colors = [
+                    UIColor(red: 0.16, green: 0.06, blue: 0.38, alpha: 1).cgColor,
+                    UIColor.black.cgColor
+                ]
+            case .nature, .tractor, .bicycle:
+                colors = [
+                    UIColor(red: 0.42, green: 0.68, blue: 0.90, alpha: 1).cgColor,
+                    UIColor(red: 0.04, green: 0.12, blue: 0.07, alpha: 1).cgColor
+                ]
+            default:
+                colors = [
+                    UIColor(red: 0.10, green: 0.03, blue: 0.22, alpha: 1).cgColor,
+                    UIColor.black.cgColor
+                ]
+            }
+
+            if let gradient = CGGradient(
+                colorsSpace: CGColorSpaceCreateDeviceRGB(),
+                colors: colors as CFArray,
+                locations: [0, 1]
+            ) {
+                cg.drawLinearGradient(
+                    gradient,
+                    start: CGPoint(x: size.width / 2, y: 0),
+                    end: CGPoint(x: size.width / 2, y: size.height),
+                    options: []
+                )
+            }
+
+            if config.type == .space || config.type == .spaceship || config.type == .airplane {
+                UIColor.white.withAlphaComponent(0.55).setFill()
+                for i in 0..<90 {
+                    let x = CGFloat((i * 61) % max(Int(size.width), 1))
+                    let y = CGFloat((i * 97) % max(Int(size.height), 1))
+                    cg.fillEllipse(in: CGRect(x: x, y: y, width: i % 7 == 0 ? 4 : 2, height: i % 7 == 0 ? 4 : 2))
+                }
             }
 
             let parallax = sin(time * 2.1) * 0.12 * config.parallaxStrength
@@ -34,24 +75,6 @@ enum WallpaperFrameRenderer {
             throw ExportError.frameRenderFailed
         }
         return cgImage
-    }
-
-    private static func drawAspectFill(_ image: UIImage, in rect: CGRect) {
-        let imageRatio = image.size.width / image.size.height
-        let targetRatio = rect.width / rect.height
-        var drawRect = rect
-
-        if imageRatio > targetRatio {
-            let width = rect.height * imageRatio
-            drawRect.origin.x -= (width - rect.width) / 2
-            drawRect.size.width = width
-        } else {
-            let height = rect.width / imageRatio
-            drawRect.origin.y -= (height - rect.height) / 2
-            drawRect.size.height = height
-        }
-
-        image.draw(in: drawRect)
     }
 }
 

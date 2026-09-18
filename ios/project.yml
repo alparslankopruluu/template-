@@ -12,8 +12,6 @@ targets:
     platform: iOS
     sources:
       - ScreenMotion
-    resources:
-      - ../assets/wallpapers
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.screenmotion.app

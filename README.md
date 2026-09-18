@@ -2,24 +2,25 @@
 
 Native iOS + Android experiment for living lock/home screen themes.
 
-## What is implemented
+## Implemented
 
 ### Android
-- Kotlin + Jetpack Compose theme picker and interactive onboarding
+- Kotlin + Jetpack Compose interactive onboarding
 - real `WallpaperService`
-- rotation-vector / gyro input
+- rotation-vector / gyroscope input
 - touch / drag input
-- Canvas render loop with visibility-aware battery handling
+- visibility-aware 30/60 FPS render loop
 - aquarium fish + bubbles
 - space starfield + spacecraft
 - nature parallax
 - car, truck, bus, tractor, tank, helicopter, airplane and bicycle scenes
+- procedural fallback backgrounds, so the app runs without external binary assets
 
 ### iOS
-- SwiftUI theme picker and interactive onboarding
+- SwiftUI interactive onboarding and theme picker
 - CoreMotion tilt preview
 - drag interaction
-- aquarium, space, nature and vehicle previews
+- procedural aquarium, space, nature and vehicle scenes
 - Live Photo render/export pipeline
 - Photos library save flow
 
@@ -29,7 +30,7 @@ Native iOS + Android experiment for living lock/home screen themes.
 
 - `android/` Android Studio project
 - `ios/` Swift/XcodeGen project
-- `assets/wallpapers/` shared prototype backgrounds
+- `assets/wallpapers/` vector concept assets
 - `docs/` architecture, platform limitations and asset roadmap
 
 ## Android
@@ -38,11 +39,9 @@ Open `android/` in Android Studio, sync and run.
 
 Choose a theme and tap **Canlı Duvar Kağıdını Uygula**.
 
-The wallpaper engine reads the saved theme and starts motion/touch rendering only while visible.
-
 ## iOS
 
-The iOS project is described with XcodeGen:
+Generate the Xcode project with XcodeGen:
 
 ```bash
 cd ios
@@ -50,15 +49,8 @@ xcodegen generate
 open ScreenMotion.xcodeproj
 ```
 
-Run on a physical device for CoreMotion and Live Photo validation.
+Use a physical device for CoreMotion and Live Photo validation.
 
-## Prototype assets
+## Asset strategy
 
-The starter contains four lightweight generated images:
-
-- `car_night.jpg`
-- `aquarium.jpg`
-- `space.jpg`
-- `nature.jpg`
-
-See `docs/ASSET_PLAN.md` before producing store-quality packs.
+The committed SVG files are lightweight visual references. Production theme packs should use 3–6 depth layers and transparent subject assets or GLB models. See `docs/ASSET_PLAN.md`.

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 540">
+<defs>
+  <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+    <stop stop-color="#0da6e8"/><stop offset=".55" stop-color="#07558f"/><stop offset="1" stop-color="#041426"/>
+  </linearGradient>
+</defs>
+<rect width="360" height="540" fill="url(#water)"/>
+<g opacity=".18" fill="#fff">
+  <path d="M40 0L120 330L150 330L92 0Z"/><path d="M180 0L205 300L235 300L238 0Z"/>
+</g>
+<g fill="none" stroke-linecap="round">
+  <path d="M35 540Q20 450 65 380" stroke="#ff7c3d" stroke-width="12"/>
+  <path d="M82 540Q110 465 95 410" stroke="#ffcf4b" stroke-width="10"/>
+  <path d="M280 540Q245 465 275 400" stroke="#d35cff" stroke-width="13"/>
+  <path d="M325 540Q305 460 330 420" stroke="#34e5a2" stroke-width="10"/>
+</g>
+<g font-size="36">
+  <text x="70" y="235">🐠</text><text x="235" y="180">🐟</text><text x="160" y="320">🐡</text>
+</g>
+<g fill="none" stroke="#fff" opacity=".55">
+  <circle cx="80" cy="340" r="8"/><circle cx="95" cy="300" r="5"/><circle cx="260" cy="290" r="7"/><circle cx="245" cy="250" r="4"/>
+</g>
+</svg>

@@ -10,17 +10,19 @@ struct SpaceSceneView: View {
                 let t = timeline.date.timeIntervalSinceReferenceDate
 
                 ZStack {
-                    Image("space")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: proxy.size.width * 1.14, height: proxy.size.height * 1.14)
-                        .offset(
-                            x: -CGFloat(motion.roll) * 40 + drag.width * 0.12,
-                            y: -CGFloat(motion.pitch) * 22 + drag.height * 0.06
-                        )
+                    RadialGradient(
+                        colors: [
+                            Color(red: 0.20, green: 0.08, blue: 0.42),
+                            Color(red: 0.03, green: 0.04, blue: 0.13),
+                            .black
+                        ],
+                        center: .center,
+                        startRadius: 10,
+                        endRadius: 420
+                    )
 
                     Canvas { context, size in
-                        for i in 0..<110 {
+                        for i in 0..<130 {
                             let seed = pseudo(Double(i) * 12.9898)
                             let seed2 = pseudo(Double(i) * 31.726)
                             let z = 0.35 + pseudo(Double(i) * 7.77) * 1.55
@@ -33,6 +35,22 @@ struct SpaceSceneView: View {
                                 with: .color(.white.opacity(0.45 + z * 0.18))
                             )
                         }
+
+                        let planetRect = CGRect(
+                            x: size.width * 0.58 - CGFloat(motion.roll) * 10,
+                            y: size.height * 0.16 - CGFloat(motion.pitch) * 8,
+                            width: size.width * 0.55,
+                            height: size.width * 0.55
+                        )
+                        context.fill(
+                            Path(ellipseIn: planetRect),
+                            with: .radialGradient(
+                                Gradient(colors: [.cyan.opacity(0.65), .indigo.opacity(0.8), .black]),
+                                center: CGPoint(x: planetRect.midX * 0.9, y: planetRect.midY * 0.8),
+                                startRadius: 0,
+                                endRadius: planetRect.width * 0.55
+                            )
+                        )
                     }
 
                     Text("🚀")

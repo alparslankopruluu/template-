@@ -10,14 +10,30 @@ struct NatureSceneView: View {
                 let t = timeline.date.timeIntervalSinceReferenceDate
 
                 ZStack {
-                    Image("nature")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: proxy.size.width * 1.13, height: proxy.size.height * 1.13)
-                        .offset(
-                            x: -CGFloat(motion.roll) * 36 + drag.width * 0.1,
-                            y: -CGFloat(motion.pitch) * 20
-                        )
+                    LinearGradient(
+                        colors: [
+                            Color(red: 0.40, green: 0.67, blue: 0.90),
+                            Color(red: 0.16, green: 0.34, blue: 0.32),
+                            Color(red: 0.04, green: 0.09, blue: 0.08)
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+
+                    Canvas { context, size in
+                        let shift = -CGFloat(motion.roll) * 28 + drag.width * 0.08
+                        var mountain = Path()
+                        mountain.move(to: CGPoint(x: -40 + shift, y: size.height * 0.62))
+                        mountain.addLine(to: CGPoint(x: size.width * 0.28 + shift, y: size.height * 0.25))
+                        mountain.addLine(to: CGPoint(x: size.width * 0.48 + shift, y: size.height * 0.55))
+                        mountain.addLine(to: CGPoint(x: size.width * 0.70 + shift, y: size.height * 0.20))
+                        mountain.addLine(to: CGPoint(x: size.width + 50 + shift, y: size.height * 0.60))
+                        mountain.closeSubpath()
+                        context.fill(mountain, with: .color(Color.black.opacity(0.48)))
+
+                        let lake = CGRect(x: 0, y: size.height * 0.61, width: size.width, height: size.height * 0.39)
+                        context.fill(Path(lake), with: .color(.blue.opacity(0.20)))
+                    }
 
                     ForEach(0..<7, id: \.self) { i in
                         Text("⌁")

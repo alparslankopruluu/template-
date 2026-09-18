@@ -11,14 +11,34 @@ struct AquariumSceneView: View {
                 let t = timeline.date.timeIntervalSinceReferenceDate
 
                 ZStack {
-                    Image("aquarium")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: proxy.size.width * 1.12, height: proxy.size.height * 1.12)
-                        .offset(
-                            x: -CGFloat(motion.roll) * 26 + drag.width * 0.08,
-                            y: -CGFloat(motion.pitch) * 15
-                        )
+                    LinearGradient(
+                        colors: [
+                            Color(red: 0.04, green: 0.45, blue: 0.78),
+                            Color(red: 0.00, green: 0.19, blue: 0.38),
+                            Color(red: 0.00, green: 0.05, blue: 0.12)
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+
+                    Canvas { context, size in
+                        for i in 0..<7 {
+                            let x = size.width * (0.08 + CGFloat(i) * 0.145)
+                            let h = size.height * (0.10 + CGFloat(i % 3) * 0.045)
+                            var coral = Path()
+                            coral.move(to: CGPoint(x: x, y: size.height))
+                            coral.addCurve(
+                                to: CGPoint(x: x + 20, y: size.height - h),
+                                control1: CGPoint(x: x - 10, y: size.height - h * 0.45),
+                                control2: CGPoint(x: x + 28, y: size.height - h * 0.70)
+                            )
+                            context.stroke(
+                                coral,
+                                with: .color([Color.orange, .pink, .purple, .mint][i % 4].opacity(0.72)),
+                                lineWidth: 7
+                            )
+                        }
+                    }
 
                     ForEach(0..<10, id: \.self) { index in
                         let speed = 0.12 + Double(index % 4) * 0.025
